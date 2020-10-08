@@ -1,33 +1,16 @@
-﻿using Dev_Task.Models;
+﻿using Dev_Task.DAL;
+using Dev_Task.Models;
+using Microsoft.Graph;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Web.Mvc;
 
 namespace Dev_Task.Controllers
 {
     public class HomeController : Controller
     {
-        static public IEnumerable<Book> books = new List<Book>
-        {
-           new Book {
-               Id = 1,
-               Name = "Robocop",
-               ReaderType = Type.Adults,
-               Author = "dd",
-               Genre = "dd",
-               NumberOfPages = 130,
-               Description = "dd"               
-           },
-           new Book {
-               Id = 2,
-               Name = "Spiderman",
-               ReaderType = Type.Children,
-               Author = "asd",
-               Genre = "asd",
-               NumberOfPages = 80,
-               Description = "asd"
-           },
-        };
+        readonly BaseRepo<Book> repo = new BaseRepo<Book>();
         public ActionResult Index()
         {
             return View();
@@ -35,21 +18,34 @@ namespace Dev_Task.Controllers
         [HttpPost]
         public ActionResult BookSearch()
         {
-            return Json(books);
+            return Json(repo.GetAll());
         }
 
-        public ActionResult About()
+        [HttpPost]
+        public ActionResult BookAdd(Book book)
         {
-            ViewBag.Message = "Your application description page.";
-
-            return View();
+            if (book == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            else
+            {
+                repo.Add(book);
+                return new HttpStatusCodeResult(HttpStatusCode.OK);
+            }
         }
-
-        public ActionResult Contact()
+        [HttpPost]
+        public ActionResult BookDel(int id)
         {
-            ViewBag.Message = "Your contact page.";
-
-            return View();
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            else
+            {
+                repo.Delete(id);
+                return new HttpStatusCodeResult(HttpStatusCode.OK);
+            }
         }
     }
 }

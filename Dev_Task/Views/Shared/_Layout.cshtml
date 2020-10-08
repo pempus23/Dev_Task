@@ -8,6 +8,8 @@
     <script src="~/Scripts/MicrosoftAjax.js" type="text/javascript"></script>
     <script src="~/Scripts/MicrosoftMvcAjax.js" type="text/javascript"></script>
     <script src="~/Scripts/jquery.unobtrusive-ajax.min.js" type="text/javascript"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.0/css/bootstrap.min.css" />
 </head>
     <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
@@ -22,12 +24,14 @@
            
         </div>
     </div>
-    <div class="container body-content">
-        @RenderBody()
-        <footer>
-            @*<p>&copy; @DateTime.Now.Year - Dev_Task</p>*@
-        </footer>
-    </div>
+    <body>
+        <div class="container body-content">
+            @RenderBody()
+            <footer>
+                @*<p>&copy; @DateTime.Now.Year - Dev_Task</p>*@
+            </footer>
+        </div>
+    </body>
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
