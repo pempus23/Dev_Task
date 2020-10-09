@@ -3,9 +3,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Dev_Task.Models
 {
-    public class Book
-    {
-        [Key]
+    public class Book 
+    {   
         public int Id { get; set; }
         public string Name { get; set; }
         public Type ReaderType { get; set; }

@@ -1,26 +1,51 @@
-﻿using System.Web.Mvc;
+﻿using Dev_Task.DAL;
+using Dev_Task.Models;
+using Microsoft.Graph;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Web.Mvc;
 
 namespace Dev_Task.Controllers
 {
     public class HomeController : Controller
     {
+        readonly BaseRepo<Book> repo = new BaseRepo<Book>();
         public ActionResult Index()
         {
             return View();
         }
-
-        public ActionResult About()
+        [HttpPost]
+        public ActionResult BookSearch()
         {
-            ViewBag.Message = "Your application description page.";
-
-            return View();
+            return Json(repo.GetAll());
         }
 
-        public ActionResult Contact()
+        [HttpPost]
+        public ActionResult BookAdd(Book book)
         {
-            ViewBag.Message = "Your contact page.";
-
-            return View();
+            if (book == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            else
+            {
+                repo.Add(book);
+                return new HttpStatusCodeResult(HttpStatusCode.OK);
+            }
+        }
+        [HttpPost]
+        public ActionResult BookDel(int id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            else
+            {
+                repo.Delete(id);
+                return new HttpStatusCodeResult(HttpStatusCode.OK);
+            }
         }
     }
 }
