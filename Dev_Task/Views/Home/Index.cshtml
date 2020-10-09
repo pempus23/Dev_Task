@@ -51,6 +51,8 @@
     <tbody>
     </tbody>
     </table>
+
+  
 <script>
 
 
@@ -118,12 +120,32 @@
  
                 e.preventDefault();
                 document.querySelector("tr[data-rowid='" + book.Id + "']").remove()
-                DeleteBook(book.Id);
-                             
+               
+                addElement(book.Id);
             });
             linksTd.append(removeLink);
             tr.appendChild(linksTd);
             return tr;
+        }
+
+        function syncDelete(id)
+        {
+            id.forEach(enement => DeleteBook(enement)); 
+        }
+
+        var remove = [];
+        function addElement(id){
+            remove.push(id);
+        }
+
+        function syncAdd(id)
+        {       
+            id.forEach(enement =>CreateBook(enement));                
+        }
+
+        var plus = [];
+        function plusElement(el){
+            plus.push(el); 
         }
 
         document.forms["userForm"].addEventListener("submit", e => {
@@ -138,11 +160,18 @@
             book.NumberOfPages = form.elements["numberOfPages"].value;
             book.Description = form.elements["description"].value;
             document.querySelector("tbody").append(row(book));
-                
-            CreateUser(book);        
+
+            plusElement(book);
+            
+            $('form')[0].reset(); 
         });
 
-        async function CreateUser(book) {
+    function syn(){
+        setTimeout(() => syncAdd(plus), 1000);
+        setTimeout(() => syncDelete(remove), 1000);
+        alert("The data is sent to the server");
+    }
+        async function CreateBook(book) {
  
             const response = await fetch("https://localhost:44393/Home/BookAdd", {
                 method: "Post",
@@ -157,7 +186,6 @@
                     Description: book.Description
                 })
             });
-            $('form')[0].reset();
         }
         async function DeleteBook(id) {
             const response = await fetch("https://localhost:44393/Home/BookDel", {
@@ -167,12 +195,8 @@
                     Id: id
                 })
             });
-            if (response.ok === true) {
-               alert("Deleted");
-            }
-        }
-
-       var time = 50;
-        setTimeout(() => alert('Привет'), time*1000); 
+        }   
+       
 </script>
+
 
